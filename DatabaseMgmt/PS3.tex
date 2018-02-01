@@ -58,8 +58,8 @@
 \usepackage{breakurl}    % Allows urls to wrap, including hyperref
 
 \pagestyle{head}
-\firstpageheader{\textbf{\class\ - \term}}{\textbf{\examnum}}{\textbf{Due: Jan. 30\\ beginning of class}}
-\runningheader{\textbf{\class\ - \term}}{\textbf{\examnum}}{\textbf{Due: Jan. 30\\ beginning of class}}
+\firstpageheader{\textbf{\class\ - \term}}{\textbf{\examnum}}{\textbf{Due: Feb. 6\\ beginning of class}}
+\runningheader{\textbf{\class\ - \term}}{\textbf{\examnum}}{\textbf{Due: Feb. 6\\ beginning of class}}
 \runningheadrule
 
 \newcommand{\class}{Econ 5970}
@@ -75,7 +75,13 @@
 \begin{document}
 This problem set will provide an opportunity for you to practice working with the command line, writing a Linux shell script, and working with data in SQL.
 
-As with the previous problem sets, you will submit this problem set by pushing the document to \emph{your} (private) fork of the class repository. You will put this and all other problem sets in the path \texttt{/DScourseS18/ProblemSets/PS3/} and name the file \texttt{PS3\_LastName.pdf}.
+As with the previous problem sets, you will submit this problem set by pushing the document to \emph{your} (private) fork of the class repository. You will put this and all other problem sets in the path \texttt{/DScourseS18/ProblemSets/PS3/} and name the file \texttt{PS3\_LastName.*}. Your directory should contain four files:
+\begin{itemize}
+    \item \texttt{PS3\_LastName.sh}
+    \item \texttt{PS3\_LastName.sql}
+    \item \texttt{PS3\_LastName.tex}
+    \item \texttt{PS3\_LastName.pdf}
+\end{itemize}
 \begin{questions}
 \question Log in to OSCER, change to the directory where you cloned your forked GitHub repository (probably \texttt{\~/DScourseS18}), and make sure the OSCER version of your repository is synchronized with what is listed on GitHub by issuing a pull. That is, type \texttt{git pull origin master} from your OSCER \texttt{DScourseS18} folder. 
 
@@ -104,7 +110,7 @@ The above tasks may seem mundane, but it's important to be able to: $(i)$ downlo
 	\item[(c)] Once in your text editor, start the script on line 1 by invoking the Linux ``shebang'' term, which tells the operating system that this is a script that should be executed. The ``shebang'' term is: \texttt{\#!/bin/sh}.
 	\item[(d)] Now copy the commands you issued in points (a) through (j) of the previous question.
 	\item[(e)] You should now have a shell script that contains 11 lines of code.
-	\item[(f)] Now close out of the shell script and save it. If you're using \texttt{nano}, hit \texttt{Ctrl+X} followed by {Y}. 
+	\item[(f)] Now close out of the shell script and save it. If you're using \texttt{nano}, hit \texttt{Ctrl+X} followed by {Y}. \textbf{NOTE: If you are a Mac OS user, ``Ctrl'' means ``Control'' \emph{not} Command}
 \end{itemize}
 
 The final step in getting your shell script operational is to make it ``executable.'' This tells the operating system that the file, even though it is a text file, should be interpreted as a sequence of commands.
