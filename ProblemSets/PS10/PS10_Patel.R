@@ -109,13 +109,21 @@ svm <- makeLearner(predict.type = "response")
 #         
 #         – cp, which is a real number ranging from 0.001 to 0.2 (governs complexity of the tree)
 
-
+parameters.tree <- makeParamSet(
+makeIntegerParam("minsplit", lower = 10, upper = 50),
+makeIntegerParam("minbucket", lower = 5, upper = 50),
+makeNumericParam("cp", lower = 0.001, upper = 0.2))
 
 # 
 #
 #     • Logit model (this is the elastic net model from last problem set, so the two parameters
 #       are l and a. For this problem set, let l 2 [0, 3] and a 2 [0, 1].
 #
+
+parameters.logit <- makeParamSet(
+makeNumericParam("lambda",lower=0,upper=3),
+makeNumericParam("alpha",lower=0,upper=1))
+
 #
 #     • Neural network model
 #         – size, which is an integer ranging from 1 to 10 (governs number of units in hidden layer)
@@ -126,15 +134,22 @@ svm <- makeLearner(predict.type = "response")
 #           fixed at 1,000 ... it governs the number of iterations the neural network takes
 #           when figuring out convergence)
 #
+parameters.nn <- makeParamSet(
+makeIntegerParam("size", lower = 1, upper = 10),
+makeNumericParam("decay", lower = 0.1, upper = 0.5),
+makeIntegerParam("maxit", lower = 1000, upper = 1000))
+
 #
 #     • Naive Bayes
 #         – There’s nothing to regularize here, so you don’t need to do any cross-validation
 #               or tuning for this model
 #
-#
 #     • kNN
 #         – k, which is an integer ranging from 1 to 30 (governs the number of “neighbors” to consider
 #
+parameters.knn <- makeParamSet(
+makeIntegerParam("k", lower = 1, upper = 30))
+
 #
 #     • SVM
 #         – kernel, which is a string value equal to “radial” (program it as “discrete”
@@ -147,14 +162,92 @@ svm <- makeLearner(predict.type = "response")
 #         – gamma, which is also a real number in the set {2^−2, 2^−1, 2^0, 2^1, 2^2, 2^10	(governs the shape 
 #           [variance] of the Gaussian kernel)
 
+parameters.svm  <- makeParamSet(
+makeDiscreteParam("cost", values = 2^c(-2, -1, 0, 1, 2, 10)), 
+makeDiscreteParam("gamma", values = 2^c(-2, -1, 0, 1, 2, 10)))
+
 
 #7 
 # Now tune the models. Use the F1 score and the G-measure as criteria for tuning
 # (these are f1 and gmean, respectively). Remember that you don’t need to tune the
 # Naive Bayes model.
 
+tunedModel.trees <- tuneParams(learner = trees,
+  task = task.highearner,
+  resampling = resampleStrat,
+  measures = list(f1, gmean),
+  par.set = parameters.tree,
+  control = tuneMethod,
+  show.info = TRUE)
+
+tunedModel.logit <- tuneParams(learner = logit,
+  task = task.highearner,
+  resampling = resampleStrat,
+  measures = list(f1, gmean),
+  par.set = parameters.logit,
+  control = tuneMethod,
+  show.info = TRUE)
+
+tunedModel.nn <- tuneParams(learner = nn,
+  task = task.highearner,
+  resampling = resampleStrat,
+  measures = list(f1, gmean),      
+  par.set = parameters.nn,
+  control = tuneMethod,
+  show.info = TRUE)
+
+tunedModel.knn <- tuneParams(learner = knn,
+  task = task.highearner,
+  resampling = resampleStrat,
+  measures = list(f1, gmean),      
+  par.set = parameters.knn,
+  control = tuneMethod,
+  show.info = TRUE)
+
+#no native bayes
+
+tunedModel.svm <- tuneParams(learner = svm,
+  task = task.highearner,
+  resampling = resampleStrat,
+  measures = list(f1, gmean),      
+  par.set = parameters.svm,
+  control = tuneMethod,
+  show.info = TRUE)
+
 #8 
 # Once tuned, apply the optimal tuning parameters to each of the algorithms (again,
 # you don’t need to do this for Naive Bayes since there was no tuning done previously).
 # Then train the models, generate predictions, and assess performance.
 
+pred.trees <- setHyperPars(learner=trees, par.vals = tunedModel.trees$x)
+pred.logit <- setHyperPars(learner=logit, par.vals = tunedModel.logit$x)
+pred.nn    <- setHyperPars(learner=nn, par.vals = tunedModel.nn$x)
+pred.knn   <- setHyperPars(learner=knn, par.vals = tunedModel.knn$x)
+pred.svm   <- setHyperPars(learner=svm, par.vals = tunedModel.svm$x)
+
+sampleResults.tree  <- resample(learner = pred.trees, task = task.highearner, resampling = resampleStrat, measures=list(gmean))
+sampleResults.logit <- resample(learner = pred.logit, task = task.highearner, resampling = resampleStrat, measures=list(gmean))
+sampleResults.nn    <- resample(learner = pred.nn, task = task.highearner, resampling = resampleStrat, measures=list(gmean))
+sampleResults.knn   <- resample(learner = pred.knn, task = task.highearner, resampling = resampleStrat, measures=list(gmean))
+sampleResults.svm   <- resample(learner = pred.svm, task = task.highearner, resampling = resampleStrat, measures=list(gmean))
+
+finalModel.tree  <- train(learner = pred.trees, task = task.highearner)
+finalModel.logit <- train(learner = pred.logit, task = task.highearner)
+finalModel.nn    <- train(learner = pred.nn, task = task.highearner)
+finalModel.knn   <- train(learner = pred.knn, task = task.highearner)
+finalModel.nb    <- train(learner = nb, task = task.highearner)
+finalModel.svm   <- train(learner = pred.svm, task = task.highearner)
+
+prediction.test.tree  <- predict(finalModel.tree, newdata = income.test)
+prediction.test.logit <- predict(finalModel.logit, newdata = income.test)
+prediction.test.nn    <- predict(finalModel.nn, newdata = income.test)
+prediction.test.knn   <- predict(finalModel.knn, newdata = income.test)
+prediction.test.nb    <- predict(finalModel.nb, newdata = income.train)
+prediction.test.svm   <- predict(finalModel.svm, newdata = income.test)
+
+performance(prediction.test.tree, measures = list(f1, gmean))
+performance(prediction.test.logit, measures = list(f1, gmean))
+performance(prediction.test.nn, measures = list(f1, gmean))
+performance(prediction.test.knn, measures = list(f1, gmean))
+performance(prediction.test.nb, measures = list(f1, gmean))
+performance(prediction.test.svm, measures = list(f1, gmean))
