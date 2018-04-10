@@ -251,3 +251,5 @@ performance(prediction.test.nn, measures = list(f1, gmean))
 performance(prediction.test.knn, measures = list(f1, gmean))
 performance(prediction.test.nb, measures = list(f1, gmean))
 performance(prediction.test.svm, measures = list(f1, gmean))
+
+#TheEnd
