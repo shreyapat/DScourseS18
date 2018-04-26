@@ -1,0 +1,77 @@
+\documentclass[10pt]{beamer}
+
+\usetheme{metropolis}
+\usepackage{appendixnumberbeamer}
+
+\usepackage{booktabs}
+\usepackage[scale=2]{ccicons}
+
+\usepackage{pgfplots}
+\usepgfplotslibrary{dateplot}
+
+\usepackage{xspace}
+\newcommand{\themename}{\textbf{\textsc{metropolis}}\xspace}
+
+\title{Political Party Affiliation}
+\subtitle{ }
+\date{April 26, 2018}
+\author{Shreya Patel}
+\institute{Data Science for Economists}
+% \titlegraphic{\hfill\includegraphics[height=1.5cm]{logo.pdf}}
+
+\begin{document}
+
+\maketitle
+
+
+\begin{frame}[fragile]{Introduction}
+  My final project seeks to predict the political affiliation of a person given specific data. The political views of a consumer is highly sought-after information, ranging from public and private organizations across industries and geographical locations. 
+\end{frame}
+
+\begin{frame}[fragile]{Introduction}
+  Social media platforms allow third party vendors to access such information. Recently, many Facebook users learned that the social media giant was categorizing them as
+  \begin{itemize}
+      \item "Very Conservative"
+      \item "Conservative"
+      \item "Moderate"
+      \item "Liberal"
+      \item "Very liberal"
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Introduction}
+    Facebook allows you to check what category its algorithm puts you in. This algorithm mislabeled my views, which is what got me thinking about this topic. The political parties being predicted are Democrat or Republican currently. However, this may be changed to Liberal or Conservative.
+\end{frame}
+
+\begin{frame}{Data Collection}
+	The data initially collected for this project was from the University of California - Irvine (yay UC!) Machine Learning Respository. There is a set of data on house votes with 435 instances (rows) of data. However, I am currently in the process of searching for data that is more specific to Oklahoma.
+\end{frame}
+
+
+\begin{frame}[fragile]{Methods}
+      At the simplest level, this project is in need of binary classification. This project initially started with a decision tree to predict whether a given person is a Democrat or a Republican based off of voting data. However, single decision trees have a known tendency to over-fit data. In an attempt to correct such behavior while sticking to a singular model, a random forest will be implemented.
+\end{frame}
+
+
+
+\begin{frame}{Findings}
+	As this project is in actively being changed, I will refrain from stating findings for previous versions. However, I do I hope that implementing a random forest will increase model accuracy. This will be an interesting comparison.
+\end{frame}
+
+
+\begin{frame}{Conclusions}
+	Information about political views is highly sought after. This information is picked up and used by social media platforms like Facebook and Twitter to frame what content you see, what advertisements you get, and more. In a previous internship, I used Twitter semantics to learn about social views. Looking at semantics would be interesting to add to this project.
+\end{frame}
+
+\begin{frame}{Links}
+    These are some links I found interesting during my research:
+	\begin{itemize}
+	    \item http://electionanalytics.cs.illinois.edu/
+	    \item http://time.com/money/5212501/how-facebook-tracks-me/
+	    \item https://www.smithsonianmag.com/science-nature/study-predicts-political-beliefs-with-83-percent-accuracy-17536124/
+	    \item http://labs.time.com/story/can-time-predict-your-politics/
+	    \item https://www.sciencedaily.com/releases/2017/02/170202141851.htm
+	\end{itemize}
+\end{frame}
+
+\end{document}
